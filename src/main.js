@@ -59,7 +59,9 @@ function crearVentana() {
     mainWindow.loadURL(RENDERER_DEV_URL);
     mainWindow.webContents.openDevTools({ mode: "detach" });
   } else {
-    mainWindow.loadFile(RENDERER_PROD_PATH);
+    // En producción: cargar desde el backend Express que sirve el frontend
+    // Esto permite que las rutas /api/ funcionen correctamente
+    mainWindow.loadURL(`http://127.0.0.1:${backendPort}`);
   }
 
   mainWindow.once("ready-to-show", () => {

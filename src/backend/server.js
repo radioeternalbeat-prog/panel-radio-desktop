@@ -57,6 +57,7 @@ async function iniciarBackend() {
         dataPath,
         uploadsPath,
         ffmpegPath,
+        jwtSecret: process.env.JWT_SECRET,
       });
 
       server = http.createServer(expressApp);
