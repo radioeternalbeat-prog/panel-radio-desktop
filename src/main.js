@@ -47,6 +47,7 @@ function crearVentana() {
       nodeIntegration: false,
       contextIsolation: true,
       sandbox: false, // Necesario para acceder a fs vía preload
+      devTools: isDev, // Solo en desarrollo
     },
     titleBarStyle: process.platform === "darwin" ? "hiddenInset" : "default",
     backgroundColor: "#121214",
