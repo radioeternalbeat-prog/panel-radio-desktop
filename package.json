@@ -1,0 +1,112 @@
+{
+  "name": "panel-radio-desktop",
+  "version": "1.0.0",
+  "description": "Panel Radio Online — Aplicación de escritorio con backend embebido, FFmpeg y modo offline",
+  "main": "src/main.js",
+  "author": "Eternal Beat Medios <soporte@panelradioonline.com>",
+  "license": "MIT",
+  "homepage": "https://github.com/radioeternalbeat-prog/panel-radio-desktop",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/radioeternalbeat-prog/panel-radio-desktop.git"
+  },
+  "scripts": {
+    "start": "electron .",
+    "dev": "concurrently \"npm run dev:renderer\" \"wait-on http://localhost:5173 && electron .\"",
+    "dev:renderer": "cd renderer && npm run dev",
+    "build:renderer": "cd renderer && npm run build",
+    "build:win": "npm run build:renderer && electron-builder --win",
+    "build:mac": "npm run build:renderer && electron-builder --mac",
+    "build:all": "npm run build:renderer && electron-builder --win --mac",
+    "postinstall": "electron-builder install-app-deps"
+  },
+  "dependencies": {
+    "better-sqlite3": "^11.0.0",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.0",
+    "electron-log": "^5.1.0",
+    "electron-store": "^10.0.0",
+    "electron-updater": "^6.2.0",
+    "express": "^4.21.0",
+    "ffmpeg-static": "^5.2.0",
+    "jsonwebtoken": "^9.0.2",
+    "uuid": "^10.0.0",
+    "ws": "^8.17.0"
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.0",
+    "electron": "^32.0.0",
+    "electron-builder": "^25.0.0",
+    "wait-on": "^8.0.0"
+  },
+  "build": {
+    "appId": "com.eternalbeat.panelradio",
+    "productName": "Panel Radio Online",
+    "copyright": "Copyright © 2026 Eternal Beat Medios",
+    "directories": {
+      "output": "dist-electron",
+      "buildResources": "build"
+    },
+    "files": [
+      "src/**/*",
+      "renderer/dist/**/*",
+      "node_modules/**/*",
+      "!node_modules/**/README*",
+      "!node_modules/**/CHANGELOG*",
+      "!node_modules/**/*.md"
+    ],
+    "extraResources": [
+      {
+        "from": "resources/ffmpeg/${os}",
+        "to": "ffmpeg",
+        "filter": ["**/*"]
+      },
+      {
+        "from": "resources/data",
+        "to": "data",
+        "filter": ["**/*"]
+      }
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": ["x64"]
+        }
+      ],
+      "icon": "build/icon.ico",
+      "artifactName": "${productName}-Setup-${version}.${ext}"
+    },
+    "mac": {
+      "target": [
+        {
+          "target": "dmg",
+          "arch": ["x64", "arm64"]
+        }
+      ],
+      "icon": "build/icon.icns",
+      "category": "public.app-category.music",
+      "artifactName": "${productName}-${version}-${arch}.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "installerIcon": "build/icon.ico",
+      "uninstallerIcon": "build/icon.ico"
+    },
+    "dmg": {
+      "contents": [
+        { "x": 130, "y": 220 },
+        { "x": 410, "y": 220, "type": "link", "path": "/Applications" }
+      ]
+    },
+    "publish": {
+      "provider": "github",
+      "owner": "radioeternalbeat-prog",
+      "repo": "panel-radio-desktop"
+    }
+  }
+}

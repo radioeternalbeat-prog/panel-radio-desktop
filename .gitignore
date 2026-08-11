@@ -1,0 +1,33 @@
+# Dependencies
+node_modules/
+renderer/node_modules/
+
+# Build output
+dist-electron/
+renderer/dist/
+
+# Electron
+*.asar
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+.env.local
+
+# IDE
+.vscode/
+.idea/
+
+# Logs
+*.log
+logs/
+
+# User data (runtime)
+userData/
+
+# FFmpeg binaries (downloaded during setup)
+resources/ffmpeg/win/
+resources/ffmpeg/mac/

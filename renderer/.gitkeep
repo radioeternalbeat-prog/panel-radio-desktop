@@ -1,0 +1,3 @@
+# Renderer (Frontend)
+# Clone the PANEL-RADIO-ON-LINE- repo here or symlink it.
+# The React frontend builds to renderer/dist/ which Electron loads.
