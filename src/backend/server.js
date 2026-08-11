@@ -106,18 +106,27 @@ async function detenerBackend() {
 
 /**
  * Genera un JWT secret persistente para la instancia local.
+ * Usa un archivo JSON simple en userData (sin electron-store).
  */
 function generarSecretLocal() {
-  const Store = require("electron-store");
-  const store = new Store({ name: "secrets" });
-  let secret = store.get("jwt-secret");
-  if (!secret) {
+  const secretsPath = path.join(app.getPath("userData"), "secrets.json");
+  let secrets = {};
+
+  // Leer secrets existentes
+  try {
+    if (fs.existsSync(secretsPath)) {
+      secrets = JSON.parse(fs.readFileSync(secretsPath, "utf-8"));
+    }
+  } catch { /* archivo corrupto, regenerar */ }
+
+  if (!secrets["jwt-secret"]) {
     const { randomBytes } = require("crypto");
-    secret = randomBytes(64).toString("hex");
-    store.set("jwt-secret", secret);
+    secrets["jwt-secret"] = randomBytes(64).toString("hex");
+    fs.writeFileSync(secretsPath, JSON.stringify(secrets, null, 2), "utf-8");
     log.info("Nuevo JWT secret generado y guardado");
   }
-  return secret;
+
+  return secrets["jwt-secret"];
 }
 
 /**
